@@ -29,6 +29,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(VisibleAnywhere)
+	int PlayerScore;
+
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* FPSCameraComponent;
 
 	UPROPERTY(VisibleAnywhere)

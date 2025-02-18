@@ -23,13 +23,39 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMesh* BodyCube;
+	UPROPERTY(VisibleDefaultsOnly)
+	UStaticMeshComponent* RotationPoint;
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMesh* HeadCube;
+	UPROPERTY(VisibleDefaultsOnly)
+	UStaticMeshComponent* BodyCube;
+
+	UPROPERTY(VisibleDefaultsOnly)
+	UStaticMeshComponent* HeadCube;
+
+	UPROPERTY(EditAnywhere)
+	bool IsActive = false;
+
+	UPROPERTY(EditAnywhere)
+	bool IsRaising = false;
+
+	UPROPERTY(EditAnywhere)
+	bool IsLowering = false;
+
+	UPROPERTY(EditAnywhere)
+	float FlipTime = 0.3f;
+
+	UPROPERTY(EditAnywhere)
+	float CurrentFlipTime = 0;
+
+	float LoweredAngle = -90.0f, StandingAngle = 0.0f;
 
 	UFUNCTION()
-	void Hit();
+	virtual void Hit(FString areaHit);
+
+	UFUNCTION()
+	virtual void FlipUp();
+
+	UFUNCTION()
+	virtual void FlipDown();
 
 };

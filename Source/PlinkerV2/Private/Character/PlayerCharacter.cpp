@@ -65,6 +65,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	// Fire
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::StartFire);
 
+	// Pause
+	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &APlayerCharacter::PauseGame);
+
 }
 
 void APlayerCharacter::MoveForward(float value)
@@ -105,10 +108,16 @@ void APlayerCharacter::StartFire()
 
 	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility, CollisionParams))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("The Component Being Hit is: %s"), *OutHit.GetActor()->GetName()));
-		PlayerScore++;
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("Score is now: %f"), PlayerScore));
+		if (ATargetBase* target = Cast<ATargetBase>(OutHit.GetActor()))
+			target->Hit(OutHit.GetComponent()->GetName());
 	}
 
+}
+
+void APlayerCharacter::PauseGame()
+{
+	AFPSGameHud* FPSHUD = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>();
+
+	FPSHUD->ShowPauseMenu(FPSHUD->PauseGameWidget);
 }
 

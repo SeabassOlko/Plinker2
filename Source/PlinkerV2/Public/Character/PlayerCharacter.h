@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "HUD/FPSGameHud.h"
+#include "Targets/TargetBase.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -57,5 +60,9 @@ public:
 
 	UFUNCTION()
 	void StartFire();
+
+	UFUNCTION()
+	void PauseGame();
+
 
 };

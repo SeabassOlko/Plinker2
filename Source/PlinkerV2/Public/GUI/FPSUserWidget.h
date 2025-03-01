@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameMode/FPSPlinkerGameModeBase.h"
 #include "FPSUserWidget.generated.h"
 
 /**
@@ -26,6 +28,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* ScoreText;
+
+	UFUNCTION()
+	void SetupStats();
 
 	UFUNCTION()
 	void SetTimeText(int time);

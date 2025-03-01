@@ -1,24 +1,30 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameMode/FPSPlinkerGameModeBase.h"
+#include "Managers/GameManager.h"
 
-void AFPSPlinkerGameModeBase::StartPlay()
+// Sets default values
+AGameManager::AGameManager()
 {
-	Super::StartPlay();
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
 
-	// 1. To print to screen
-	check(GEngine != nullptr);
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Hello World, this is FPSGameMode!"));
+}
+
+// Called when the game starts or when spawned
+void AGameManager::BeginPlay()
+{
+	Super::BeginPlay();
 
 	TArray<AActor*> FoundActors = TArray<AActor*>();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyTarget::StaticClass(), FoundActors);
 
 	MaxScore = FoundActors.Num();
+	
 }
 
 // Called every frame
-void AFPSPlinkerGameModeBase::Tick(float DeltaTime)
+void AGameManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -39,17 +45,17 @@ void AFPSPlinkerGameModeBase::Tick(float DeltaTime)
 	}
 }
 
-void AFPSPlinkerGameModeBase::StartTimer()
+void AGameManager::StartTimer()
 {
 	TimerRunning = true;
 }
 
-void AFPSPlinkerGameModeBase::StopTimer()
+void AGameManager::StopTimer()
 {
 	TimerRunning = false;
 }
 
-void AFPSPlinkerGameModeBase::UpdateTime()
+void AGameManager::UpdateTime()
 {
 	UFPSUserWidget* PlayerHud = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>()->GameWidgetContainer;
 
@@ -57,10 +63,11 @@ void AFPSPlinkerGameModeBase::UpdateTime()
 		PlayerHud->SetTimeText(int(CurrentTime));
 }
 
-void AFPSPlinkerGameModeBase::AddScore(int amount)
+void AGameManager::AddScore(int amount)
 {
 }
 
-void AFPSPlinkerGameModeBase::RemoveScore(int amount)
+void AGameManager::RemoveScore(int amount)
 {
 }
+

@@ -3,24 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
-#include "Logging/StructuredLog.h"
+#include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "HUD/FPSGameHud.h"
 #include "GUI/FPSUserWidget.h"
 #include "Targets/EnemyTarget.h"
-#include "FPSPlinkerGameModeBase.generated.h"
+#include "GameManager.generated.h"
 
-/**
- * 
- */
 UCLASS()
-class PLINKERV2_API AFPSPlinkerGameModeBase : public AGameModeBase
+class PLINKERV2_API AGameManager : public AActor
 {
 	GENERATED_BODY()
+	
+public:	
+	// Sets default values for this actor's properties
+	AGameManager();
 
-	virtual void StartPlay() override;
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
+public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -52,5 +55,6 @@ class PLINKERV2_API AFPSPlinkerGameModeBase : public AGameModeBase
 
 	UFUNCTION()
 	void RemoveScore(int amount);
-	
+
+
 };

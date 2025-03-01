@@ -6,6 +6,15 @@
 void UFPSUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	SetupStats();
+}
+
+void UFPSUserWidget::SetupStats()
+{
+
+	 AFPSPlinkerGameModeBase GameMode = UGameplayStatics::GetGameMode(GetWorld());
+
 }
 
 void UFPSUserWidget::SetTimeText(int time)

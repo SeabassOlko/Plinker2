@@ -7,7 +7,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "HUD/FPSGameHud.h"
 #include "GUI/FPSUserWidget.h"
-#include "Targets/EnemyTarget.h"
 #include "GameManager.generated.h"
 
 UCLASS()
@@ -31,30 +30,25 @@ public:
 	int Score = 0;
 
 	UPROPERTY(EditAnywhere)
-	int MaxScore;
+	int MaxScore = 0;
 
 	UPROPERTY(EditAnywhere)
-	float CurrentTime = 0;
-
-	bool FirstTick = true;
+	int TotalTargets;
 
 	UPROPERTY()
-	bool TimerRunning = false;
+	UFPSUserWidget* PlayerHud;
 
-	UFUNCTION()
-	void StartTimer();
+	UPROPERTY()
+	int HeadShotScore = 3;
 
-	UFUNCTION()
-	void StopTimer();
+	UPROPERTY()
+	int BodyShotScore = 1;
 
-	UFUNCTION()
-	void UpdateTime();
+	bool FirstTick = true;
 
 	UFUNCTION()
 	void AddScore(int amount);
 
 	UFUNCTION()
 	void RemoveScore(int amount);
-
-
 };

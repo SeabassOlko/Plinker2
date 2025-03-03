@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Managers/GameManager.h"
 #include "TargetBase.generated.h"
 
 UCLASS()
@@ -31,6 +32,9 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly)
 	UStaticMeshComponent* HeadCube;
+
+	UPROPERTY(EditAnywhere)
+	AGameManager* GameManagerRef;
 
 	UPROPERTY(EditAnywhere)
 	bool IsActive = false;

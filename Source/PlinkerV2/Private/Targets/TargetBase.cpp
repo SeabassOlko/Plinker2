@@ -30,6 +30,7 @@ void ATargetBase::BeginPlay()
 {
 	Super::BeginPlay();
 	SetActorRotation(FRotator(0, 0, -90), ETeleportType::None);
+	GameManagerRef = Cast<AGameManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGameManager::StaticClass()));
 }
 
 // Called every frame

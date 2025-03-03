@@ -3,6 +3,12 @@
 
 #include "GameMode/FPSPlinkerGameModeBase.h"
 
+
+AFPSPlinkerGameModeBase::AFPSPlinkerGameModeBase()
+{
+	PrimaryActorTick.bCanEverTick = true;
+}
+
 void AFPSPlinkerGameModeBase::StartPlay()
 {
 	Super::StartPlay();
@@ -10,27 +16,12 @@ void AFPSPlinkerGameModeBase::StartPlay()
 	// 1. To print to screen
 	check(GEngine != nullptr);
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Hello World, this is FPSGameMode!"));
-
-	TArray<AActor*> FoundActors = TArray<AActor*>();
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyTarget::StaticClass(), FoundActors);
-
-	MaxScore = FoundActors.Num();
 }
 
 // Called every frame
 void AFPSPlinkerGameModeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (FirstTick)
-	{
-		UFPSUserWidget* PlayerHud = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>()->GameWidgetContainer;
-
-		if (PlayerHud != NULL)
-			PlayerHud->SetScoreText(Score, MaxScore);
-
-		FirstTick = false;
-	}
 
 	if (TimerRunning)
 	{
@@ -41,7 +32,10 @@ void AFPSPlinkerGameModeBase::Tick(float DeltaTime)
 
 void AFPSPlinkerGameModeBase::StartTimer()
 {
+	AFPSGameHud* GameHud = Cast<AFPSGameHud>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	PlayerHud = GameHud->GameWidgetContainer;
 	TimerRunning = true;
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("Timer Started")));
 }
 
 void AFPSPlinkerGameModeBase::StopTimer()
@@ -51,16 +45,13 @@ void AFPSPlinkerGameModeBase::StopTimer()
 
 void AFPSPlinkerGameModeBase::UpdateTime()
 {
-	UFPSUserWidget* PlayerHud = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>()->GameWidgetContainer;
-
-	if (PlayerHud != NULL)
-		PlayerHud->SetTimeText(int(CurrentTime));
+	if (PlayerHud)
+	{
+		PlayerHud->SetTimeText(int(CurrentTime * 100));
+	}
 }
 
-void AFPSPlinkerGameModeBase::AddScore(int amount)
+int AFPSPlinkerGameModeBase::GetCurrentTime()
 {
-}
-
-void AFPSPlinkerGameModeBase::RemoveScore(int amount)
-{
+	return CurrentTime * 100;
 }

@@ -46,10 +46,21 @@ void AFPSGameHud::ShowPauseMenu(TSubclassOf<UPauseMenuWidget> newGameWidget)
 
 	PlayerOwner->SetPause(true);
 
-	RemoveGameUI();
 	// Spawn a newGameWidget and addtoviewport
 	PauseWidgetContainer = CreateWidget<UPauseMenuWidget>(GetWorld(), newGameWidget);
 	PauseWidgetContainer->AddToViewport();
+}
+
+void AFPSGameHud::ShowScoreMenu(TSubclassOf<UScoreCardWidget> newGameWidget)
+{
+	PlayerOwner->bShowMouseCursor = true;
+	PlayerOwner->SetInputMode(FInputModeUIOnly());
+
+	PlayerOwner->SetPause(true);
+
+	// Spawn a newGameWidget and addtoviewport
+	ScoreCardWidgetContainer = CreateWidget<UScoreCardWidget>(GetWorld(), newGameWidget);
+	ScoreCardWidgetContainer->AddToViewport();
 }
 
 void AFPSGameHud::RemovePauseMenu()
@@ -60,17 +71,11 @@ void AFPSGameHud::RemovePauseMenu()
 		PauseWidgetContainer->RemoveFromParent();
 		PauseWidgetContainer = nullptr;
 	}
-	ShowGameUI(StartingGameWidget);
-}
 
-void AFPSGameHud::RemoveGameUI()
-{
-	// Check if a game menu has spawned RemoveFromParent
-	if (GameWidgetContainer)
-	{
-		GameWidgetContainer->RemoveFromParent(); 
-		GameWidgetContainer = nullptr;
-	}
+	PlayerOwner->bShowMouseCursor = false;
+	PlayerOwner->SetInputMode(FInputModeGameOnly());
+
+	PlayerOwner->SetPause(false);
 }
 
 void AFPSGameHud::QuitGame()

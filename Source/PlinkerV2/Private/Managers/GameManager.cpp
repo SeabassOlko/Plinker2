@@ -2,25 +2,22 @@
 
 
 #include "Managers/GameManager.h"
+#include "Targets/EnemyTarget.h"
 
 // Sets default values
 AGameManager::AGameManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
-
-	TArray<AActor*> FoundActors = TArray<AActor*>();
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyTarget::StaticClass(), FoundActors);
-
-	MaxScore = FoundActors.Num();
-	
+	TArray<AActor*> FoundTargets;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyTarget::StaticClass(), FoundTargets);
+	MaxScore = FoundTargets.Num() * HeadShotScore;
 }
 
 // Called every frame
@@ -30,44 +27,26 @@ void AGameManager::Tick(float DeltaTime)
 
 	if (FirstTick)
 	{
-		UFPSUserWidget* PlayerHud = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>()->GameWidgetContainer;
+		PlayerHud = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>()->GameWidgetContainer;
 
 		if (PlayerHud != NULL)
 			PlayerHud->SetScoreText(Score, MaxScore);
 
 		FirstTick = false;
 	}
-
-	if (TimerRunning)
-	{
-		CurrentTime += DeltaTime;
-		UpdateTime();
-	}
-}
-
-void AGameManager::StartTimer()
-{
-	TimerRunning = true;
-}
-
-void AGameManager::StopTimer()
-{
-	TimerRunning = false;
-}
-
-void AGameManager::UpdateTime()
-{
-	UFPSUserWidget* PlayerHud = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>()->GameWidgetContainer;
-
-	if (PlayerHud != NULL)
-		PlayerHud->SetTimeText(int(CurrentTime));
 }
 
 void AGameManager::AddScore(int amount)
 {
+	Score += amount;
+
+	PlayerHud->SetScoreText(Score, MaxScore);
 }
 
 void AGameManager::RemoveScore(int amount)
 {
+	Score -= amount;
+
+	PlayerHud->SetScoreText(Score, MaxScore);
 }
 

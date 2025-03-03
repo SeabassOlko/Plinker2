@@ -8,7 +8,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "HUD/FPSGameHud.h"
 #include "GUI/FPSUserWidget.h"
-#include "Targets/EnemyTarget.h"
 #include "FPSPlinkerGameModeBase.generated.h"
 
 /**
@@ -25,18 +24,16 @@ class PLINKERV2_API AFPSPlinkerGameModeBase : public AGameModeBase
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere)
-	int Score = 0;
-
-	UPROPERTY(EditAnywhere)
-	int MaxScore;
-
-	UPROPERTY(EditAnywhere)
 	float CurrentTime = 0;
-
-	bool FirstTick = true;
 
 	UPROPERTY()
 	bool TimerRunning = false;
+
+	UPROPERTY()
+	UFPSUserWidget* PlayerHud;
+
+public:
+	AFPSPlinkerGameModeBase();
 
 	UFUNCTION()
 	void StartTimer();
@@ -48,9 +45,5 @@ class PLINKERV2_API AFPSPlinkerGameModeBase : public AGameModeBase
 	void UpdateTime();
 
 	UFUNCTION()
-	void AddScore(int amount);
-
-	UFUNCTION()
-	void RemoveScore(int amount);
-	
+	int GetCurrentTime();
 };

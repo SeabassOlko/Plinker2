@@ -29,6 +29,5 @@ public:
 	virtual void Hit(FString areaHit) override;
 	virtual void FlipUp() override;
 	virtual void FlipDown() override;
-
 	
 };

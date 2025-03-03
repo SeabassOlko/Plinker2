@@ -7,6 +7,7 @@
 #include "Engine/Canvas.h"
 #include "GUI/FPSUserWidget.h"
 #include "GUI/PauseMenuWidget.h"
+#include "GUI/ScoreCardWidget.h"
 #include "FPSGameHud.generated.h"
 
 /**
@@ -33,12 +34,17 @@ public:
 	TSubclassOf<UFPSUserWidget> StartingGameWidget;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UPauseMenuWidget> PauseGameWidget;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UScoreCardWidget> ScoreCardWidget;
 
 	UPROPERTY()
 	UFPSUserWidget* GameWidgetContainer;
 
 	UPROPERTY()
 	UPauseMenuWidget* PauseWidgetContainer;
+
+	UPROPERTY()
+	UScoreCardWidget* ScoreCardWidgetContainer;
 
 	UFUNCTION()
 	void ShowGameUI(TSubclassOf<UFPSUserWidget> newGameWidget);
@@ -47,10 +53,10 @@ public:
 	void ShowPauseMenu(TSubclassOf<UPauseMenuWidget> newGameWidget);
 
 	UFUNCTION()
-	void RemovePauseMenu();
+	void ShowScoreMenu(TSubclassOf<UScoreCardWidget> newGameWidget);
 
 	UFUNCTION()
-	void RemoveGameUI();
+	void RemovePauseMenu();
 
 	UFUNCTION()
 	void QuitGame();

@@ -24,6 +24,11 @@ APlayerCharacter::APlayerCharacter()
 		FPSMesh->CastShadow = false;
 	}
 
+	if (!Ammo)
+	{
+		Ammo = CreateDefaultSubobject<UAmmoComponent>(TEXT("AmmoComponent"));
+	}
+
 	GetMesh()->SetOwnerNoSee(true);
 
 	UE_LOG(LogTemp, Warning, TEXT("Character Constructor Called"));
@@ -35,7 +40,9 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayerScore = 0;
+	PlayerWidget = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>()->GameWidgetContainer;
+
+	PlayerWidget->SetAmmoText(Ammo->CurrentAmmo, Ammo->MaxAmmo);
 }
 
 // Called every frame
@@ -64,6 +71,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	// Fire
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::StartFire);
+
+	// Reload
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &APlayerCharacter::Reload);
 
 	// Pause
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &APlayerCharacter::PauseGame);
@@ -94,6 +104,10 @@ void APlayerCharacter::EndJump()
 
 void APlayerCharacter::StartFire()
 {
+	if (!Ammo->UseAmmo()) return;
+
+	PlayerWidget->SetAmmoText(Ammo->CurrentAmmo, Ammo->MaxAmmo);
+
 	UE_LOG(LogTemp, Warning, TEXT("Fire raycast"));
 
 	FHitResult OutHit;
@@ -104,7 +118,7 @@ void APlayerCharacter::StartFire()
 	FCollisionQueryParams CollisionParams;
 
 	 
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 5);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, .3f, 0, 2);
 
 	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECollisionChannel::ECC_Visibility, CollisionParams))
 	{
@@ -119,5 +133,13 @@ void APlayerCharacter::PauseGame()
 	AFPSGameHud* FPSHUD = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD<AFPSGameHud>();
 
 	FPSHUD->ShowPauseMenu(FPSHUD->PauseGameWidget);
+}
+
+void APlayerCharacter::Reload()
+{
+	if (!Ammo->IsReloading)
+		Ammo->ReloadGun();
+
+	PlayerWidget->SetAmmoText(Ammo->MaxAmmo, Ammo->MaxAmmo);
 }
 

@@ -8,7 +8,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "HUD/FPSGameHud.h"
+#include "GUI/FPSUserWidget.h"
 #include "Targets/TargetBase.h"
+#include "Character/AmmoComponent.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -46,6 +48,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	float ShotDistance;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	UAmmoComponent* Ammo;
+
+	UPROPERTY()
+	UFPSUserWidget* PlayerWidget;
+
 	UFUNCTION()
 	void MoveForward(float value);
 
@@ -64,5 +72,6 @@ public:
 	UFUNCTION()
 	void PauseGame();
 
-
+	UFUNCTION()
+	void Reload();
 };

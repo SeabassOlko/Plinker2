@@ -58,6 +58,7 @@ void ATargetBase::Tick(float DeltaTime)
 		{
 			CurrentFlipTime = FlipTime;
 			IsRaising = false;
+			IsActive = true;
 		}
 		float LerpAngle = FMath::Lerp(LoweredAngle, StandingAngle, CurrentFlipTime/FlipTime);
 		SetActorRotation(FRotator(InitPitch, InitYaw, LerpAngle), ETeleportType::None);
@@ -77,7 +78,6 @@ void ATargetBase::FlipUp()
 {
 	CurrentFlipTime = 0;
 	IsRaising = true;
-	IsActive = true;
 }
 
 void ATargetBase::FlipDown()

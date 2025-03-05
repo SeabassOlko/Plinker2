@@ -29,7 +29,9 @@ ATargetBase::ATargetBase()
 void ATargetBase::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorRotation(FRotator(0, 0, -90), ETeleportType::None);
+	InitPitch = GetActorRotation().Pitch;
+	InitYaw = GetActorRotation().Yaw;
+	SetActorRotation(FRotator(InitPitch, InitYaw, -90), ETeleportType::None);
 	GameManagerRef = Cast<AGameManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGameManager::StaticClass()));
 }
 
@@ -47,7 +49,7 @@ void ATargetBase::Tick(float DeltaTime)
 			IsLowering = false;
 		}
 		float LerpAngle = FMath::Lerp(StandingAngle, LoweredAngle, CurrentFlipTime/FlipTime);
-		SetActorRotation(FRotator(0, 0, LerpAngle), ETeleportType::None);
+		SetActorRotation(FRotator(InitPitch, InitYaw, LerpAngle), ETeleportType::None);
 	}
 	else if (IsRaising)
 	{
@@ -58,7 +60,7 @@ void ATargetBase::Tick(float DeltaTime)
 			IsRaising = false;
 		}
 		float LerpAngle = FMath::Lerp(LoweredAngle, StandingAngle, CurrentFlipTime/FlipTime);
-		SetActorRotation(FRotator(0, 0, LerpAngle), ETeleportType::None);
+		SetActorRotation(FRotator(InitPitch, InitYaw, LerpAngle), ETeleportType::None);
 	}
 
 }

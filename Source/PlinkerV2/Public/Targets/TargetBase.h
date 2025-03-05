@@ -52,6 +52,8 @@ public:
 	float CurrentFlipTime = 0;
 
 	float LoweredAngle = -90.0f, StandingAngle = 0.0f;
+	float InitPitch;
+	float InitYaw;
 
 	UFUNCTION()
 	virtual void Hit(FString areaHit);
@@ -61,5 +63,4 @@ public:
 
 	UFUNCTION()
 	virtual void FlipDown();
-
 };

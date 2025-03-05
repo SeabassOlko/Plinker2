@@ -13,5 +13,19 @@ UCLASS()
 class PLINKERV2_API AHostageTarget : public ATargetBase
 {
 	GENERATED_BODY()
-	
+public:
+	// Sets default values for this actor's properties
+	AHostageTarget();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void Hit(FString areaHit) override;
+	virtual void FlipUp() override;
+	virtual void FlipDown() override;
 };
